@@ -16,23 +16,23 @@
             min-height: 100vh;
             margin: 0;
             color: #f5f5f5;
-            text-align: center; /* Ensures text is centered */
+            text-align: center; 
             overflow-y: auto;
         }
         .container {
             margin: 100px auto 0;
-            display: flex; /* Enable flexbox */
-            flex-direction: column; /* Stack content vertically */
-            justify-content: center; /* Center content vertically */
-            align-items: center; /* Center content horizontally */
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
             background: rgba(0, 0, 0, 0.6);
             border-radius: 10px;
             padding: 30px;
             padding-bottom: 69px;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
             transition: transform 0.3s;
-            max-width: 33%; /* Limit width of the container */
-            width: 100%; /* Ensure it takes full width within the max-width */
+            max-width: 33%; 
+            width: 100%; 
         }
 
         .container:hover {
@@ -273,7 +273,7 @@
         }
 
         .output iframe {
-            width: 66vw; /* Full width of the viewport */
+            width: 66vw; 
             max-width: 100%;
             height: 666px;
             border: 1px solid #fec195;
@@ -438,28 +438,33 @@
             '3': { A: '1244', B: '1245', C: '1246', D: '1247', E: '1248', F: '1249', G: '1250' },
             '4': { A: '1253', B: '1254', C: '1255', D: '1256', E: '1257', F: '1258', G: '1259' },
             '5': { A: '1261', B: '1262', C: '1263', D: '1264', E: '1265', F: '1266', G: '1267' },
+            '6': { A: '1269', B: '1270', C: '1271', D: '1272', E: '1273', F: '1274' },
+            '7': { A: '1277', B: '1278', C: '1279', D: '1280', E: '1281', F: '1282' },
+            '8': { A: '1285', B: '1286', C: '1287', D: '1288', E: '1289', F: '1290' },
             '9': { A: '1292', B: '1293', C: '1294', D: '1295', E: '1296', F: '1297' },
             '11': { A: '1311', B: '1312', C: '1313', D: '1314', E: '1315', F: '1316' },
             '12': { A: '1318', B: '1319', C: '1320', D: '1321', E: '1322', F: '1323' }
         };
 
         function generateReport() {
+            let termName = "" 
             const grade = document.getElementById("grade").value.trim();
             const section = document.getElementById("section").value.trim().toUpperCase();
             const output = document.getElementById("output");
-            output.innerHTML = ""; // Clear previous output
+            output.innerHTML = ""; 
 
             if (sectionMaps[grade] && sectionMaps[grade][section]) {
                 const sectionId = sectionMaps[grade][section];
                 let gradeId = "";
 
                 if (["1", "2", "3", "4", "5"].includes(grade)) gradeId = "1-5";
-                else if (grade === "9") gradeId = "IX_X";
+                else if (["6", "7", "8"].includes(grade)) { gradeId = "VI_VIII"; termName="TERM%20I";}
+                else if (grade == "9") gradeId = "IX_X";
                 else if (["11", "12"].includes(grade)) gradeId = "XI_XII";
 
-                const url = `https://nms.edu.bh/ProgramFiles/ProgressReport/Report/2024-2025/StudentWiseReport${gradeId}.aspx?ClassSectionId=${sectionId}&TermId=&StudentId=&ExamId=&TermName=&Print=`;
+                const url = `https://nms.edu.bh/ProgramFiles/ProgressReport/Report/2024-2025/StudentWiseReport${gradeId}.aspx?ClassSectionId=${sectionId}&TermName=${termName}&TermId=&StudentId=&ExamId=&Print=`;
 
-                // Dynamically create and set iframe
+                // IFRAME
                 const iframe = document.createElement("iframe");
                 iframe.src = url;
                 iframe.width = "100%";
