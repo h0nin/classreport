@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NMS Class Report Viewer</title>
+    <style>
+        body {
+            background-color: #1d1f24;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: auto;
+            min-height: 100vh;
+            margin: 0;
+            color: #f5f5f5;
+            text-align: center; /* Ensures text is centered */
+            overflow-y: auto;
+        }
+        .container {
+            margin: 100px auto 0;
+            display: flex; /* Enable flexbox */
+            flex-direction: column; /* Stack content vertically */
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 30px;
+            padding-bottom: 69px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            transition: transform 0.3s;
+            max-width: 33%; /* Limit width of the container */
+            width: 100%; /* Ensure it takes full width within the max-width */
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 50px;
+        }
+        /* From Uiverse.io by AbanoubMagdy1 */
+        .wave-group {
+          position: relative;
+          margin: auto auto 20px;
+        }
+
+        .wave-group .input {
+          font-size: 20px;
+          padding: 10px 10px 10px 5px;
+          display: block;
+          width: 200px;
+          border: none;
+          border-bottom: 1px solid #515151;
+          background: transparent;
+          color: #fddeff;
+        }
+
+        .wave-group .input:focus {
+          outline: none;
+          color: #fddeff;
+        }
+
+        .wave-group .label {
+          color: #fddeff;
+          font-size: 15px;
+          font-weight: normal;
+          position: absolute;
+          pointer-events: none;
+          left: 5px;
+          top: 10px;
+          display: flex;
+        }
+
+        .wave-group .label-char {
+          transition: 0.2s ease all;
+          transition-delay: calc(var(--index) * .05s);
+        }
+
+        .wave-group .input:focus ~ label .label-char,
+        .wave-group .input:valid ~ label .label-char {
+          transform: translateY(-20px);
+          font-size: 14px;
+          color: #fec195;
+        }
+
+        .wave-group .bar {
+          position: relative;
+          display: block;
+          width: 200px;
+        }
+
+        .wave-group .bar:before,.wave-group .bar:after {
+          content: '';
+          height: 2px;
+          width: 0;
+          bottom: 1px;
+          position: absolute;
+          background: #fec195;
+          transition: 0.2s ease all;
+          -moz-transition: 0.2s ease all;
+          -webkit-transition: 0.2s ease all;
+        }
+
+        .wave-group .bar:before {
+          left: 50%;
+        }
+
+        .wave-group .bar:after {
+          right: 50%;
+        }
+
+        .wave-group .input:focus ~ .bar:before,
+        .wave-group .input:focus ~ .bar:after {
+          width: 50%;
+        }
+
+
+        button {
+          position: relative;
+          padding: 12px 35px;
+          background: #fec195;
+          font-size: 17px;
+          font-weight: 500;
+          color: #181818;
+          border: 3px solid #fec195;
+          border-radius: 8px;
+          box-shadow: 0 0 0 #fec1958c;
+          transition: all 0.3s ease-in-out;
+          cursor: pointer;
+          font-weight: bold;
+        }
+
+        .star-1 {
+          position: absolute;
+          top: 20%;
+          left: 20%;
+          width: 25px;
+          height: auto;
+          filter: drop-shadow(0 0 0 #fffdef);
+          z-index: -5;
+          transition: all 1s cubic-bezier(0.05, 0.83, 0.43, 0.96);
+        }
+
+        .star-2 {
+          position: absolute;
+          top: 45%;
+          left: 45%;
+          width: 15px;
+          height: auto;
+          filter: drop-shadow(0 0 0 #fffdef);
+          z-index: -5;
+          transition: all 1s cubic-bezier(0, 0.4, 0, 1.01);
+        }
+
+        .star-3 {
+          position: absolute;
+          top: 40%;
+          left: 40%;
+          width: 5px;
+          height: auto;
+          filter: drop-shadow(0 0 0 #fffdef);
+          z-index: -5;
+          transition: all 1s cubic-bezier(0, 0.4, 0, 1.01);
+        }
+
+        .star-4 {
+          position: absolute;
+          top: 20%;
+          left: 40%;
+          width: 8px;
+          height: auto;
+          filter: drop-shadow(0 0 0 #fffdef);
+          z-index: -5;
+          transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
+        }
+
+        .star-5 {
+          position: absolute;
+          top: 25%;
+          left: 45%;
+          width: 15px;
+          height: auto;
+          filter: drop-shadow(0 0 0 #fffdef);
+          z-index: -5;
+          transition: all 0.6s cubic-bezier(0, 0.4, 0, 1.01);
+        }
+
+        .star-6 {
+          position: absolute;
+          top: 5%;
+          left: 50%;
+          width: 5px;
+          height: auto;
+          filter: drop-shadow(0 0 0 #fffdef);
+          z-index: -5;
+          transition: all 0.8s ease;
+        }
+
+        button:hover {
+          background: transparent;
+          color: #fec195;
+          box-shadow: 0 0 25px #fec1958c;
+        }
+
+        button:hover .star-1 {
+          position: absolute;
+          top: -80%;
+          left: -30%;
+          width: 25px;
+          height: auto;
+          filter: drop-shadow(0 0 10px #fffdef);
+          z-index: 2;
+        }
+
+        button:hover .star-2 {
+          position: absolute;
+          top: -25%;
+          left: 10%;
+          width: 15px;
+          height: auto;
+          filter: drop-shadow(0 0 10px #fffdef);
+          z-index: 2;
+        }
+
+        button:hover .star-3 {
+          position: absolute;
+          top: 55%;
+          left: 25%;
+          width: 5px;
+          height: auto;
+          filter: drop-shadow(0 0 10px #fffdef);
+          z-index: 2;
+        }
+
+        button:hover .star-4 {
+          position: absolute;
+          top: 30%;
+          left: 80%;
+          width: 8px;
+          height: auto;
+          filter: drop-shadow(0 0 10px #fffdef);
+          z-index: 2;
+        }
+
+        button:hover .star-5 {
+          position: absolute;
+          top: 25%;
+          left: 115%;
+          width: 15px;
+          height: auto;
+          filter: drop-shadow(0 0 10px #fffdef);
+          z-index: 2;
+        }
+
+        button:hover .star-6 {
+          position: absolute;
+          top: 5%;
+          left: 60%;
+          width: 5px;
+          height: auto;
+          filter: drop-shadow(0 0 10px #fffdef);
+          z-index: 2;
+        }
+
+        .fil0 {
+          fill: #fffdef;
+        }
+
+        .output iframe {
+            width: 66vw; /* Full width of the viewport */
+            max-width: 100%;
+            height: 666px;
+            border: 1px solid #fec195;
+            margin: 30px auto 6px;
+            background-color: white;
+        }
+
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Class Report Viewer</h1>
+        <div class="wave-group">
+            <input type="text" id="grade" required="" class="input">
+            <span class="bar"></span>
+            <label class="label">
+                <span class="label-char" style="--index: 0">Enter&nbsp;</span>
+                <span class="label-char" style="--index: 1">grade</span>
+                <span class="label-char" style="--index: 2" >:&nbsp;</span>
+                <span class="label-char" style="--index: 3">(1-12)</span>
+            </label>
+        </div>
+
+        <div class="wave-group">
+            <input type="text" id="section" required="" class="input">
+            <span class="bar"></span>
+            <label class="label">
+                <span class="label-char" style="--index: 0">Enter&nbsp;</span>
+                <span class="label-char" style="--index: 1">section</span>
+                <span class="label-char" style="--index: 2" >:&nbsp;</span>
+                <span class="label-char" style="--index: 3">(A-G)</span>
+            </label>
+        </div>
+
+
+        <button onclick="generateReport()">
+          Display Report
+          <div class="star-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xml:space="preserve"
+              version="1.1"
+              style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+              viewBox="0 0 784.11 815.53"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <defs></defs>
+              <g id="Layer_x0020_1">
+                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                <path
+                  class="fil0"
+                  d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                ></path>
+              </g>
+            </svg>
+          </div>
+          <div class="star-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xml:space="preserve"
+              version="1.1"
+              style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+              viewBox="0 0 784.11 815.53"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <defs></defs>
+              <g id="Layer_x0020_1">
+                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                <path
+                  class="fil0"
+                  d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                ></path>
+              </g>
+            </svg>
+          </div>
+          <div class="star-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xml:space="preserve"
+              version="1.1"
+              style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+              viewBox="0 0 784.11 815.53"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <defs></defs>
+              <g id="Layer_x0020_1">
+                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                <path
+                  class="fil0"
+                  d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                ></path>
+              </g>
+            </svg>
+          </div>
+          <div class="star-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xml:space="preserve"
+              version="1.1"
+              style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+              viewBox="0 0 784.11 815.53"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <defs></defs>
+              <g id="Layer_x0020_1">
+                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                <path
+                  class="fil0"
+                  d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                ></path>
+              </g>
+            </svg>
+          </div>
+          <div class="star-5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xml:space="preserve"
+              version="1.1"
+              style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+              viewBox="0 0 784.11 815.53"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <defs></defs>
+              <g id="Layer_x0020_1">
+                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                <path
+                  class="fil0"
+                  d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                ></path>
+              </g>
+            </svg>
+          </div>
+          <div class="star-6">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xml:space="preserve"
+              version="1.1"
+              style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+              viewBox="0 0 784.11 815.53"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <defs></defs>
+              <g id="Layer_x0020_1">
+                <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                <path
+                  class="fil0"
+                  d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                ></path>
+              </g>
+            </svg>
+          </div>
+</button>
+    </div>
+    <div id="output" class="output"></div>
+    <script>
+        const sectionMaps = {
+            '1': { A: '1226', B: '1227', C: '1228', D: '1229', E: '1230', F: '1231', G: '1232' },
+            '2': { A: '1235', B: '1236', C: '1237', D: '1238', E: '1239', F: '1240', G: '1241' },
+            '3': { A: '1244', B: '1245', C: '1246', D: '1247', E: '1248', F: '1249', G: '1250' },
+            '4': { A: '1253', B: '1254', C: '1255', D: '1256', E: '1257', F: '1258', G: '1259' },
+            '5': { A: '1261', B: '1262', C: '1263', D: '1264', E: '1265', F: '1266', G: '1267' },
+            '9': { A: '1292', B: '1293', C: '1294', D: '1295', E: '1296', F: '1297' },
+            '11': { A: '1311', B: '1312', C: '1313', D: '1314', E: '1315', F: '1316' },
+            '12': { A: '1318', B: '1319', C: '1320', D: '1321', E: '1322', F: '1323' }
+        };
+
+        function generateReport() {
+            const grade = document.getElementById("grade").value.trim();
+            const section = document.getElementById("section").value.trim().toUpperCase();
+            const output = document.getElementById("output");
+            output.innerHTML = ""; // Clear previous output
+
+            if (sectionMaps[grade] && sectionMaps[grade][section]) {
+                const sectionId = sectionMaps[grade][section];
+                let gradeId = "";
+
+                if (["1", "2", "3", "4", "5"].includes(grade)) gradeId = "1-5";
+                else if (grade === "9") gradeId = "IX_X";
+                else if (["11", "12"].includes(grade)) gradeId = "XI_XII";
+
+                const url = `https://nms.edu.bh/ProgramFiles/ProgressReport/Report/2024-2025/StudentWiseReport${gradeId}.aspx?ClassSectionId=${sectionId}&TermId=&StudentId=&ExamId=&TermName=&Print=`;
+
+                // Dynamically create and set iframe
+                const iframe = document.createElement("iframe");
+                iframe.src = url;
+                iframe.width = "100%";
+                iframe.height = "600px";
+                iframe.style.border = "1px solid #fec195";
+
+                output.appendChild(iframe);
+            } else {
+                output.innerHTML = "<p style='color: red;'>This grade/section dont work for now.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
