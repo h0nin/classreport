@@ -1,3 +1,3 @@
 24/11/24 
 :
-smol tanks to chatgpt and uiverse
+claswisereports of academic year 24-25
